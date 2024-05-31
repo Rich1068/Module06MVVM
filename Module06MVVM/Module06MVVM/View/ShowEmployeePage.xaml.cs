@@ -35,5 +35,27 @@ namespace Module06MVVM.View
         {
             this.Navigation.PushAsync(new EmployeeView());
         }
+        private async void lsdata_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem != null)
+            {
+                EmployeeModel obj = (EmployeeModel)e.SelectedItem;
+                string res = await DisplayActionSheet("Operation", "Cancel", null, "Update", "Delete");
+
+                switch (res)
+                {
+                    case "Update":
+                        await this.Navigation.PushAsync(new EmployeeView(obj));
+                        break;
+
+                    case "Delete":
+                        viewModel.DeleteEmployee(obj);
+                        showEmployeePage();
+                        break;
+                }
+
+                lstData.SelectedItem = null;
+            }
+        }
     }
 }
